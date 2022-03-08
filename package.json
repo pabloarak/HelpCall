@@ -1,0 +1,24 @@
+{
+  "name": "help-call",
+  "version": "1.0.0",
+  "description": "API to find the location of help calls from a ship in the Star Wars universe.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pabloarak/HelpCall.git"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "express"
+  ],
+  "author": "Pablo Arak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pabloarak/HelpCall/issues"
+  },
+  "homepage": "https://github.com/pabloarak/HelpCall#readme"
+}
