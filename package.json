@@ -4,6 +4,7 @@
   "description": "API to find the location of help calls from a ship in the Star Wars universe.",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/pabloarak/HelpCall/issues"
   },
-  "homepage": "https://github.com/pabloarak/HelpCall#readme"
+  "homepage": "https://github.com/pabloarak/HelpCall#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
