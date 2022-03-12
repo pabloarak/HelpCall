@@ -19,7 +19,7 @@ const satellitesAPI = (app) => {
 
     try {
       const distances = satellitesService.getDistances(satellites);
-      const messages = satellitesService.getDistances(satellites);
+      const messages = satellitesService.getMessages(satellites);
       const position = satellitesService.getShipLocation(distances);
       const message = satellitesService.getShipMessage(messages);
 
