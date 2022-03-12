@@ -53,7 +53,37 @@ class SatellitesService {
   }
 
   getShipMessage(messages) {
-    return '';
+    // I assume that the array containing the message has the same length on each satellite.
+    console.log(messages);
+    const message = messages.reduce((accum, message) => {
+      if (accum.length === 0) {
+        return [...message];
+      }
+
+      let newArray = [];
+
+      for (let i = 0; i < accum.length; i++) {
+        if (accum[i] !== '') {
+          if (accum[i] === message[i]) {
+            newArray.push(accum[i]);
+          } else {
+            if (message[i] === '') {
+              newArray.push(accum[i]);
+            } else {
+              console.log('undefined message');
+            }
+          }
+        } else if (message[i] !== '') {
+          newArray.push(message[i]);
+        } else {
+          console.log('undefined message');
+        }
+      }
+
+      return [...newArray];
+    }, []);
+    const finalMessage = message.join(' ');
+    return finalMessage;
   }
 }
 
