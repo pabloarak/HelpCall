@@ -8,7 +8,7 @@ const {
 } = require('./utils/middleware/errorHandlers.js');
 const { notFoundHandler } = require('./utils/middleware/notFoundHandler.js');
 const satellites = require('./routes/satellites');
-const PORT = process.env.PORT || 8080;
+const { config } = require('./config/index');
 
 // Body parser
 app.use(express.json());
@@ -28,6 +28,6 @@ app.use(logErrors);
 app.use(wrapErrors);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}...`);
+app.listen(config.port, () => {
+  console.log(`Server listening on port ${config.port}...`);
 });
