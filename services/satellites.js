@@ -1,9 +1,33 @@
+const MongoLib = require('../lib/mongo');
+
 class SatellitesService {
   constructor() {
+    this.collection = 'satellites';
+    this.mongoDB = new MongoLib();
     this.kenobi = { x: -500, y: -200 };
     this.skywalker = { x: 100, y: -100 };
     this.sato = { x: 500, y: 100 };
     this.ship = { x: 0, y: 0 };
+  }
+
+  async updateSatellite(satellite) {
+    console.log(satellite);
+    const createdSatelliteId = await this.mongoDB.update(
+      this.collection,
+      satellite.name,
+      satellite
+    );
+    return createdSatelliteId;
+  }
+
+  async getSatellites() {
+    const satellites = await this.mongoDB.getAll(this.collection);
+    return satellites || [];
+  }
+
+  async deleteAll() {
+    const deleteResponse = await this.mongoDB.delete(this.collection);
+    return deleteResponse;
   }
 
   getDistances(satellites) {
@@ -28,33 +52,60 @@ class SatellitesService {
       (2 * (this.kenobi.x - this.skywalker.x));
     const q =
       (this.kenobi.y - this.skywalker.y) / (this.kenobi.x - this.skywalker.x);
-    // Second equation
+    // Get second grade equation
     const a = 1 + Math.pow(q, 2);
-    const b = 2 * this.kenobi.x * q - 2 * p * q - 2 * this.kenobi.y;
+    const b = 2 * this.sato.x * q - 2 * p * q - 2 * this.sato.y;
     const c =
-      Math.pow(this.kenobi.x, 2) +
-      Math.pow(this.kenobi.y, 2) -
-      2 * this.kenobi.x * p +
+      Math.pow(this.sato.x, 2) +
+      Math.pow(this.sato.y, 2) -
+      2 * this.sato.x * p +
       Math.pow(p, 2) -
-      Math.pow(distances[0], 2);
-    // Third equation
-    const d = 2 * this.skywalker.x * q - 2 * p * q - 2 * this.skywalker.y;
-    const e =
-      Math.pow(this.skywalker.x, 2) +
-      Math.pow(this.skywalker.y, 2) -
-      2 * this.skywalker.x * p +
-      Math.pow(p, 2) -
-      Math.pow(distances[1], 2);
-    // Ship Y position
-    this.ship.y = (c * d - e * b) / (a * e - c * a);
-    // Ship X position
-    this.ship.x = p - q * this.ship.y;
+      Math.pow(distances[2], 2);
+    // Calculation of the second degree equation for Y point of the ship
+    const shipY1 = Math.round(
+      (-b + Math.sqrt(Math.pow(b, 2) - 4 * a * c)) / (2 * a)
+    );
+    const shipY2 = Math.round(
+      (-b - Math.sqrt(Math.pow(b, 2) - 4 * a * c)) / (2 * a)
+    );
+
+    if (!shipY1 && !shipY2) {
+      return null;
+    } else if (shipY1 && !shipY2) {
+      this.ship.y = shipY1;
+      this.ship.x = p - q * shipY1;
+    } else if (shipY2 && !shipY1) {
+      this.ship.y = shipY2;
+      this.ship.x = p - q * shipY2;
+    } else {
+      const shipX1 = Math.round(p - q * shipY1);
+      const shipX2 = Math.round(p - q * shipY2);
+
+      const distanceWithShipX1Y1 = Math.sqrt(
+        Math.pow(this.sato.x - shipX1, 2) + Math.pow(this.sato.y - shipY1, 2)
+      );
+
+      const distanceWithShipX2Y2 = Math.sqrt(
+        Math.pow(this.sato.x - shipX2, 2) + Math.pow(this.sato.y - shipY2, 2)
+      );
+
+      if (Math.round(distanceWithShipX1Y1 * 100) / 100 === distances[2]) {
+        this.ship.x = shipX1;
+        this.ship.y = shipY1;
+      } else if (
+        Math.round(distanceWithShipX2Y2 * 100) / 100 ===
+        distances[2]
+      ) {
+        this.ship.x = shipX2;
+        this.ship.y = shipY2;
+      }
+    }
+
     return this.ship;
   }
 
   getShipMessage(messages) {
     // I assume that the array containing the message has the same length on each satellite.
-    console.log(messages);
     const message = messages.reduce((accum, message) => {
       if (accum.length === 0) {
         return [...message];
@@ -70,18 +121,23 @@ class SatellitesService {
             if (message[i] === '') {
               newArray.push(accum[i]);
             } else {
-              console.log('undefined message');
+              newArray.push('');
             }
           }
         } else if (message[i] !== '') {
           newArray.push(message[i]);
         } else {
-          console.log('undefined message');
+          newArray.push('');
         }
       }
 
       return [...newArray];
     }, []);
+
+    if (!message || message.length === 0) {
+      return null;
+    }
+
     const finalMessage = message.join(' ');
     return finalMessage;
   }
