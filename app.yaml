@@ -1,1 +1,9 @@
 runtime: nodejs16
+env_variables:
+  NODE_ENV: 'dev',
+  PORT: '8080',
+  CORS: '*',
+  DB_USER: '',
+  DB_PASSWORD: '',
+  DB_HOST: '',
+  DB_NAME: '',
