@@ -76,8 +76,8 @@ const satellitesAPI = (app) => {
             if (!position || !message) {
               res.status(404).send('Not found');
             } else {
-              await await satellitesService.deleteAll();
-              
+              await satellitesService.deleteAll();
+
               res.status(200).json({
                 position,
                 message,
@@ -139,6 +139,8 @@ const satellitesAPI = (app) => {
             if (!position || !message) {
               res.status(404).send('Not found');
             } else {
+              await satellitesService.deleteAll();
+
               res.status(200).json({
                 position,
                 message,
