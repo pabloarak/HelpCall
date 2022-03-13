@@ -12,6 +12,9 @@
 # below:
 .git
 .gitignore
+.env
+.env.example
+.app.example.yaml
 
 # Node.js dependencies:
 node_modules/
