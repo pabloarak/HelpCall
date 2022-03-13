@@ -8,10 +8,19 @@ const satellitesAPI = (app) => {
 
   const satellitesService = new SatellitesService();
 
-  router.get('/', (req, res, next) => {
-    res.json({
-      Title: 'Hello World',
-    });
+  router.get('/topsecret_split/:satelliteName', (req, res, next) => {
+    const { satelliteName } = req.params;
+    try {
+      console.log(satelliteName);
+      const position = 0;
+      const message = '';
+      res.status(200).json({
+        position,
+        message,
+      });
+    } catch (error) {
+      next(error);
+    }
   });
 
   router.post('/topsecret', (req, res, next) => {
