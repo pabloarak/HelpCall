@@ -11,7 +11,6 @@ class SatellitesService {
   }
 
   async updateSatellite(satellite) {
-    console.log(satellite);
     const createdSatelliteId = await this.mongoDB.update(
       this.collection,
       satellite.name,
@@ -26,7 +25,7 @@ class SatellitesService {
   }
 
   async deleteAll() {
-    const deleteResponse = await this.mongoDB.delete(this.collection);
+    const deleteResponse = await this.mongoDB.deleteAll(this.collection);
     return deleteResponse;
   }
 
@@ -41,7 +40,7 @@ class SatellitesService {
   }
 
   getShipLocation(distances) {
-    // First equation (ship.x)
+    // First equation: ShipX = p - q * shipY
     const p =
       (Math.pow(distances[1], 2) -
         Math.pow(distances[0], 2) +
@@ -52,7 +51,7 @@ class SatellitesService {
       (2 * (this.kenobi.x - this.skywalker.x));
     const q =
       (this.kenobi.y - this.skywalker.y) / (this.kenobi.x - this.skywalker.x);
-    // Get second grade equation
+    // Get second grade equation: a * shipY^2 + b * shipY + c = 0
     const a = 1 + Math.pow(q, 2);
     const b = 2 * this.sato.x * q - 2 * p * q - 2 * this.sato.y;
     const c =
@@ -70,14 +69,18 @@ class SatellitesService {
     );
 
     if (!shipY1 && !shipY2) {
+      // Not found when each value of shipY is undetermined
       return null;
     } else if (shipY1 && !shipY2) {
+      // If shipY2 is undetermined, I use shipY1 for calculate shipX
       this.ship.y = shipY1;
       this.ship.x = p - q * shipY1;
     } else if (shipY2 && !shipY1) {
+      // If shipY1 is undetermined, I use shipY2 for calculate shipX
       this.ship.y = shipY2;
       this.ship.x = p - q * shipY2;
     } else {
+      // If shipY1 and shipY2 are real values, I choose the value validating with the distance equation of the third satellite (sato)
       const shipX1 = Math.round(p - q * shipY1);
       const shipX2 = Math.round(p - q * shipY2);
 
@@ -105,7 +108,6 @@ class SatellitesService {
   }
 
   getShipMessage(messages) {
-    // I assume that the array containing the message has the same length on each satellite.
     const message = messages.reduce((accum, message) => {
       if (accum.length === 0) {
         return [...message];
