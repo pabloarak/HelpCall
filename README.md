@@ -10,6 +10,10 @@ This NodeJS API returns the source and content of the distress message. For this
 
 ## Quickstart
 
+The API is running on a GAE of Google. To test use the following URL: 
+
+[This is an external link to gcloud gae](https://challenge-343502.rj.r.appspot.com)
+
 ### Prerequisites
 
 - Node 16.
@@ -28,7 +32,7 @@ This NodeJS API returns the source and content of the distress message. For this
 Service to obtain the position and the message of the ship.
 
 BODY:
-
+```json
 {
     "satellites": [
         {
@@ -46,18 +50,18 @@ BODY:
         }
     ]
 }
-
+```
 #### POST /topsecret_split
 
 Service with which you enter the information of a satellite (distance and message of the ship). When all 3 satellites (kenobi, skywalker and sato) are entered, the position and message of the ship are obtained.
 
 BODY:
-
+```json
 {
     "distance": 761.57,
     "message": ["this", "", "", "message", ""]
 }
-
+```
 #### GET /topsecret_split/{ship_name}?distance={distance}&message={message}
 
 Service with which you enter the information of a satellite (distance and message of the ship). When all 3 satellites (kenobi, skywalker and sato) are entered, the position and message of the ship are obtained.
