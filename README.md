@@ -104,3 +104,9 @@ This equation, when delivering 2 values Xn1 and Xn2, has the following interpret
 
 - If the 2 values of Xn are two real numbers, then two values for Yn are calculated with equation i), choosing as the correct result the pair of values (Xn,Yn) that satisfies the distance equation 3 (D3 : sato).
 - If the 2 values of Xn are two complex numbers, then the problem has no solution since some or all of the distances from the satellites to the ship are not correct (Error 404).
+
+## TO DO
+
+- Create test cases.
+- Add cases not covered in error control.
+- Improve the grammar of the message translation.
