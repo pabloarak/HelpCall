@@ -12,7 +12,7 @@ This NodeJS API returns the source and content of the distress message. For this
 
 The API is running on a GAE of Google. To test use the following URL: 
 
-[This is an external link to gcloud gae](https://challenge-343502.rj.r.appspot.com)
+[https://challenge-343502.rj.r.appspot.com](https://challenge-343502.rj.r.appspot.com)
 
 ### Prerequisites
 
@@ -36,17 +36,17 @@ BODY:
 {
     "satellites": [
         {
-            “name”: "kenobi",
-            “distance”: 761.57,
-            “message”: ["this", "", "", "message", ""]
+            "name": "kenobi",
+            "distance": 761.57,
+            "message": ["this", "", "", "message", ""]
         }, {
-            “name”: "skywalker",
-            “distance”: 412.31,
-            “message”: ["", "is", "", "", "secret"]
+            "name": "skywalker",
+            "distance": 412.31,
+            "message": ["", "is", "", "", "secret"]
         }, {
-            “name”: "sato",
-            “distance”: 670.82,
-            “message”: ["this", "", "a", "", ""]
+            "name": "sato",
+            "distance": 670.82,
+            "message": ["this", "", "a", "", ""]
         }
     ]
 }
