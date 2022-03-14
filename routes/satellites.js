@@ -27,7 +27,11 @@ const satellitesAPI = (app) => {
         const message = satellitesService.getShipMessage(messages);
 
         if (!position || !message) {
-          res.status(404).send('Not found');
+          res
+            .status(404)
+            .send(
+              'Not found: the entered values do not allow to obtain a real value.'
+            );
         } else {
           res.status(200).json({
             position,
@@ -40,68 +44,70 @@ const satellitesAPI = (app) => {
     }
   );
 
-  router.get(
-    '/topsecret_split/:satelliteName',
-    validationHandler(updateSatelliteSchema),
-    async (req, res, next) => {
-      const { satelliteName } = req.params;
-      const satellite = { ...req.body, name: satelliteName };
-      try {
-        if (satelliteNamesList.includes(satelliteName)) {
-          const updatedSatelliteId = await satellitesService.updateSatellite(
-            satellite
-          );
+  router.get('/topsecret_split/:satelliteName', async (req, res, next) => {
+    const { satelliteName } = req.params;
+    const satellite = {
+      distance: parseFloat(req.query.distance),
+      message: JSON.parse(req.query.message),
+      name: satelliteName,
+    };
+    try {
+      if (satelliteNamesList.includes(satelliteName)) {
+        const updatedSatelliteId = await satellitesService.updateSatellite(
+          satellite
+        );
 
-          const satellites = await satellitesService.getSatellites();
+        const satellites = await satellitesService.getSatellites();
 
-          if (satellites.length === 3) {
-            const satellitesDistances = [
-              satellites.find((sat) => sat.name === 'kenobi').distance,
-              satellites.find((sat) => sat.name === 'skywalker').distance,
-              satellites.find((sat) => sat.name === 'sato').distance,
-            ];
+        if (satellites.length === 3) {
+          const satellitesDistances = [
+            satellites.find((sat) => sat.name === 'kenobi').distance,
+            satellites.find((sat) => sat.name === 'skywalker').distance,
+            satellites.find((sat) => sat.name === 'sato').distance,
+          ];
 
-            const satellitesMessages = [
-              satellites.find((sat) => sat.name === 'kenobi').message,
-              satellites.find((sat) => sat.name === 'skywalker').message,
-              satellites.find((sat) => sat.name === 'sato').message,
-            ];
+          const satellitesMessages = [
+            satellites.find((sat) => sat.name === 'kenobi').message,
+            satellites.find((sat) => sat.name === 'skywalker').message,
+            satellites.find((sat) => sat.name === 'sato').message,
+          ];
 
-            const distances =
-              satellitesService.getDistances(satellitesDistances);
-            const messages = satellitesService.getMessages(satellitesMessages);
-            const position = satellitesService.getShipLocation(distances);
-            const message = satellitesService.getShipMessage(messages);
+          const position =
+            satellitesService.getShipLocation(satellitesDistances);
+          const message = satellitesService.getShipMessage(satellitesMessages);
 
-            if (!position || !message) {
-              res.status(404).send('Not found');
-            } else {
-              await satellitesService.deleteAll();
-
-              res.status(200).json({
-                position,
-                message,
-              });
-            }
+          if (!position || !message) {
+            res
+              .status(404)
+              .send(
+                'Not found: the entered values do not allow to obtain a real value.'
+              );
           } else {
-            res.status(201).json({
-              data: updatedSatelliteId,
-              message:
-                'Information entered. It is necessary to enter the information of the 3 satellites (kenobi, skywalker and sato) to obtain the position and the message of the ship.',
+            await satellitesService.deleteAll();
+
+            res.status(200).json({
+              position,
+              message,
             });
           }
         } else {
-          res
-            .status(404)
-            .send(
-              'The name of the satellite can only be: kenobi, skywalker or sato.'
-            );
+          res.status(201).json({
+            data: updatedSatelliteId,
+            message:
+              'Information entered. You still need to enter all satellites (kenobi, skywalker and sato) to obtain the position and the message of the ship.',
+          });
         }
-      } catch (error) {
-        next(error);
+      } else {
+        res
+          .status(404)
+          .send(
+            'The name of the satellite can only be: kenobi, skywalker or sato.'
+          );
       }
+    } catch (error) {
+      next(error);
     }
-  );
+  });
 
   router.post(
     '/topsecret_split/:satelliteName',
@@ -137,7 +143,11 @@ const satellitesAPI = (app) => {
             const message = satellitesService.getShipMessage(messages);
 
             if (!position || !message) {
-              res.status(404).send('Not found');
+              res
+                .status(404)
+                .send(
+                  'Not found: the entered values do not allow to obtain a real value.'
+                );
             } else {
               await satellitesService.deleteAll();
 
@@ -150,7 +160,7 @@ const satellitesAPI = (app) => {
             res.status(201).json({
               data: updatedSatelliteId,
               message:
-                'Information entered. It is necessary to enter the information of the 3 satellites (kenobi, skywalker and sato) to obtain the position and the message of the ship.',
+                'Information entered. You still need to enter all satellites (kenobi, skywalker and sato) to obtain the position and the message of the ship.',
             });
           }
         } else {
