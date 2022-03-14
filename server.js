@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const app = express();
 const morgan = require('morgan');
 const {
@@ -13,6 +14,7 @@ const { config } = require('./config/index');
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+app.use(helmet());
 
 // Middleware
 app.use(morgan('dev'));
