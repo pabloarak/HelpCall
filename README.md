@@ -66,6 +66,11 @@ BODY:
 
 Service with which you enter the information of a satellite (distance and message of the ship). When all 3 satellites (kenobi, skywalker and sato) are entered, the position and message of the ship are obtained.
 
+## Considerations
+
+- Rounding to 2 decimal places is considered for final calculations and comparisons.
+- The length of the message array for each satellite is the same on each of them.
+
 ## Documentation
 
 The mathematical method of trilateration was used to obtain the position of the ship. This method is used to determine the location of a point using the geometry of spheres, circles or triangles (for this case we use triangles). For the calculation, is used the distances between the different points.
