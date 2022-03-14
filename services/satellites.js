@@ -92,12 +92,15 @@ class SatellitesService {
         Math.pow(this.sato.x - shipX2, 2) + Math.pow(this.sato.y - shipY2, 2)
       );
 
-      if (Math.round(distanceWithShipX1Y1 * 100) / 100 === distances[2]) {
+      if (
+        Math.round(distanceWithShipX1Y1 * 100) / 100 ===
+        Math.round(distances[2] * 100) / 100
+      ) {
         this.ship.x = shipX1;
         this.ship.y = shipY1;
       } else if (
         Math.round(distanceWithShipX2Y2 * 100) / 100 ===
-        distances[2]
+        Math.round(distances[2] * 100) / 100
       ) {
         this.ship.x = shipX2;
         this.ship.y = shipY2;
